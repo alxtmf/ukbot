@@ -20,7 +20,7 @@ public class QueriesEngineConfig {
         this.unitName = unitName;
         this.dbUrl = dbUrl;
         this.properties = properties;
-        this.properties.put("javax.persistence.jdbc.url", dbUrl);
+        this.properties.put("javax.persistence.jdbc.url", dbUrl); 
     }
     /**
      * @return the unitName

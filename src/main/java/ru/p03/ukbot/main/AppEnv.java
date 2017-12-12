@@ -40,7 +40,7 @@ public class AppEnv extends AbstractModule {
         
         String unitName = "UK";
         String dbUrl = "jdbc:h2:" + getRootPath() + File.separator + "db" + 
-                File.separator + "QUEB;AUTO_SERVER=TRUE"; //<property name=\"javax.persistence.jdbc.url\" value=\
+                File.separator + "UK;AUTO_SERVER=TRUE"; //<property name=\"javax.persistence.jdbc.url\" value=\
         Map hm = new HashMap();
         
         QueriesEngineConfig conf = new QueriesEngineConfig(unitName, dbUrl, hm);

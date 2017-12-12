@@ -16,16 +16,16 @@ import ru.p03.ukbot.model.ClsUser;
  */
 public interface UserRepository {
 
-	<T extends Classifier> List<T> find();
-        
-        <T extends Classifier> List<T> find(boolean isDeleted);
-        
-        <T extends Classifier> List<T> find(int maxResults, int firstResult);
-        
-        <T extends Classifier> void delete(Long id) throws NonexistentEntityException;
-        
-        <T extends Classifier> void create(T object);
+    <T extends Classifier> List<T> find();
 
-        <T extends Classifier> void edit(T object) throws NonexistentEntityException, Exception;
+    <T extends Classifier> List<T> find(boolean isDeleted);
+
+    <T extends Classifier> List<T> find(int maxResults, int firstResult);
+
+    <T extends Classifier> void delete(Long id) throws NonexistentEntityException;
+
+    <T extends Classifier> void create(T object);
+
+    <T extends Classifier> void edit(T object) throws NonexistentEntityException, Exception;
 
 }
