@@ -5,6 +5,8 @@
  */
 package ru.p03.ukbot.main;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.http.HttpHost;
@@ -14,6 +16,7 @@ import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
+import ru.p03.ukbot.manager.MainMenuManager;
 
 /**
  *
@@ -34,29 +37,33 @@ public class Main {
         } else {
             //AppEnv.getContext();//.init();
         }
+        
+        
 
-        ApiContextInitializer.init();
-        TelegramBotsApi botsApi = new TelegramBotsApi();
+//        ApiContextInitializer.init();
+//        TelegramBotsApi botsApi = new TelegramBotsApi();
 
         Runnable r = () -> {
-            Bot bot = null;
-            HttpHost proxy = null;
-            //HttpHost proxy = AppEnv.getContext().getProxyIfAbsetnt();
-            if (proxy == null) {
-                bot = new Bot();
-            } else {
-                DefaultBotOptions instance = ApiContext.getInstance(DefaultBotOptions.class);
-                RequestConfig rc = RequestConfig.custom().setProxy(proxy).build();
-                instance.setRequestConfig(rc);
-                bot = new Bot(instance);
-            }
-
-            try {
-                botsApi.registerBot(bot);
-                //AppEnv.getContext().getMenuManager().setBot(bot);
-            } catch (TelegramApiRequestException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            Injector injector = Guice.createInjector(AppEnv.getContext());
+            Bot bot = injector.getInstance(Bot.class);
+//            Bot bot = null;
+//            HttpHost proxy = null;
+//            //HttpHost proxy = AppEnv.getContext().getProxyIfAbsetnt();
+//            if (proxy == null) {
+//                bot = new Bot();
+//            } else {
+//                DefaultBotOptions instance = ApiContext.getInstance(DefaultBotOptions.class);
+//                RequestConfig rc = RequestConfig.custom().setProxy(proxy).build();
+//                instance.setRequestConfig(rc);
+//                bot = new Bot(instance);
+//            }
+//
+//            try {
+//                botsApi.registerBot(bot);
+//                //AppEnv.getContext().getMenuManager().setBot(bot);
+//            } catch (TelegramApiRequestException ex) {
+//                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+//            }
         };
 
         r.run();

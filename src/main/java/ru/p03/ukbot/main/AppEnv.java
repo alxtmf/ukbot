@@ -20,7 +20,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.p03.common.util.QueriesEngine;
 import org.apache.http.HttpHost;
+import ru.p03.bot.infrastructure.IBot;
 import ru.p03.classifier.model.ClassifierRepository;
+import ru.p03.ukbot.manager.MainMenuManager;
 import ru.p03.ukbot.model.repository.ClassifierRepositoryImpl;
 
 /**
@@ -35,6 +37,17 @@ public class AppEnv extends AbstractModule {
     public static String PROXY_USE = "PROXY_USE";
     
     private Map environments = new HashMap();
+    
+    private static AppEnv appEnv = null;
+    
+    public static AppEnv getContext(){
+        if (appEnv == null){
+            appEnv = new AppEnv();
+            appEnv.init();
+        }
+        return appEnv;
+    }
+        
 
     private QueriesEngineConfig getQueriesEngineConfig(){
         
@@ -52,8 +65,15 @@ public class AppEnv extends AbstractModule {
         bind(QueriesEngine.class).toProvider(QueriesEngineProvider.class);
         bind(QueriesEngineConfig.class).toInstance(getQueriesEngineConfig());
         bind(ClassifierRepository.class).to(ClassifierRepositoryImpl.class);
-    }
+        
+        bind(IBot.class).toProvider(BotProvider.class);
+        bind(HttpHost.class).toInstance(getProxyIfAbsetnt());
+        bind(MainMenuManager.class).toInstance(getMainMenuManager());
+    }   
     
+    public MainMenuManager getMainMenuManager(){
+        return new MainMenuManager();
+    }
     
     public String getRootPath() {
         return (String) environments.get(ROOT_PATH);
@@ -69,7 +89,7 @@ public class AppEnv extends AbstractModule {
                 Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return null;
+        return new HttpHost("0.0.0.0");
     }
     
     public void init() {

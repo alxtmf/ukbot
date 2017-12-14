@@ -5,6 +5,11 @@
  */
 package ru.p03.ukbot.main;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,15 +18,18 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
+import ru.p03.bot.infrastructure.IBot;
+import ru.p03.classifier.model.ClassifierRepository;
+import ru.p03.ukbot.manager.MainMenuManager;
 
 /**
  *
  * @author timofeevan
  */
-public class Bot extends TelegramLongPollingBot {
+public class Bot extends TelegramLongPollingBot implements IBot {
 
-    private static final String TOKEN = "430612129:AAHP8Fb0rSsa4WhxW9mxmY-1WSoFZqQ3F24";
-    private static final String USERNAME = "annaquestbot";
+    private static final String TOKEN = "509858146:AAFvNkgB8RmN4mkpdtYrdAXh36tQplUQWqU";
+    private static final String USERNAME = "sampleukbot";
 
     public Bot() {
     }
@@ -42,6 +50,16 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+
+        io.reactivex.Observable<Update> observableUpdate = Observable.create((oe) -> {
+            oe.onNext(update);
+        });
+        
+        Injector injector = Guice.createInjector(AppEnv.getContext());
+        MainMenuManager mainMenuManager = injector.getInstance(MainMenuManager.class);
+        
+        observableUpdate.subscribe(mainMenuManager);
+
         if (update.hasMessage() && update.getMessage().hasText()) {
             processCommand(update);
         } else if (update.hasInlineQuery()) {
@@ -53,21 +71,20 @@ public class Bot extends TelegramLongPollingBot {
     private void processCallbackQuery(Update update) {
         List<SendMessage> answerMessage = null;
         //try {
-            String data = update.getCallbackQuery().getData();
-            Long chatId = update.getCallbackQuery().getMessage().getChatId();
-            if (data == null) {
-                return;
-            }
+        String data = update.getCallbackQuery().getData();
+        Long chatId = update.getCallbackQuery().getMessage().getChatId();
+        if (data == null) {
+            return;
+        }
 
-            //answerMessage = AppEnv.getContext().getMenuManager().processCallbackQuery(update);
-            
-            if (answerMessage != null && answerMessage.isEmpty()) {  
+        //answerMessage = AppEnv.getContext().getMenuManager().processCallbackQuery(update);
+        if (answerMessage != null && answerMessage.isEmpty()) {
 //                for (SendMessage sendMessage : answerMessage) {
 //                    execute(sendMessage);
 //                }
-                answerMessage.clear();
-                //return;
-            }
+            answerMessage.clear();
+            //return;
+        }
 
 //        } catch (TelegramApiException ex) {
 //            Logger.getLogger(Bot.class.getName()).log(Level.SEVERE, null, ex);
