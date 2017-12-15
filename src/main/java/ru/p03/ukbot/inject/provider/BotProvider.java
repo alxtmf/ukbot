@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ru.p03.ukbot.main;
+package ru.p03.ukbot.inject.provider;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -17,6 +17,7 @@ import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 import ru.p03.common.util.QueriesEngine;
+import ru.p03.ukbot.main.Bot;
 
 /**
  *

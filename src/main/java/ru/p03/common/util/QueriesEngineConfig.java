@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ru.p03.ukbot.main;
+package ru.p03.common.util;
 
 import java.util.Map;
 

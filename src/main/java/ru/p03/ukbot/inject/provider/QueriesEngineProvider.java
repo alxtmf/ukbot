@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ru.p03.ukbot.main;
+package ru.p03.ukbot.inject.provider;
 
+import ru.p03.common.util.QueriesEngineConfig;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import ru.p03.common.util.QueriesEngine;

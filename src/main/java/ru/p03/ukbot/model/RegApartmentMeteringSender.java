@@ -15,12 +15,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import ru.p03.classifier.model.IBean;
 
 /**
  *
@@ -29,9 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "REG_APARTMENT_METERING_SENDER", catalog = "UK", schema = "UK")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "RegApartmentMeteringSender.findAll", query = "SELECT r FROM RegApartmentMeteringSender r")})
-public class RegApartmentMeteringSender implements Serializable {
+public class RegApartmentMeteringSender implements Serializable, IBean {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -61,10 +58,12 @@ public class RegApartmentMeteringSender implements Serializable {
         this.id = id;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

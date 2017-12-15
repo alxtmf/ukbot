@@ -5,6 +5,9 @@
  */
 package ru.p03.ukbot.main;
 
+import ru.p03.ukbot.inject.provider.BotProvider;
+import ru.p03.ukbot.inject.provider.QueriesEngineProvider;
+import ru.p03.common.util.QueriesEngineConfig;
 import com.google.inject.AbstractModule;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,6 +27,9 @@ import ru.p03.bot.infrastructure.IBot;
 import ru.p03.classifier.model.ClassifierRepository;
 import ru.p03.ukbot.manager.MainMenuManager;
 import ru.p03.ukbot.model.repository.ClassifierRepositoryImpl;
+import ru.p03.ukbot.inject.annotation.*;
+import ru.p03.ukbot.model.repository.*;
+import ru.p03.classifier.model.RegRepository;
 
 /**
  *
@@ -69,6 +75,13 @@ public class AppEnv extends AbstractModule {
         bind(IBot.class).toProvider(BotProvider.class);
         bind(HttpHost.class).toInstance(getProxyIfAbsetnt());
         bind(MainMenuManager.class).toInstance(getMainMenuManager());
+        
+        bind(RegRepository.class).annotatedWith(RegApartmentMeteringDeviceRepositoryAnnotation.class)
+            .to(RegApartmentMeteringDeviceRepository.class);
+        bind(RegRepository.class).annotatedWith(RegApartmentMeteringSenderRepositoryAnnotation.class)
+            .to(RegApartmentMeteringSenderRepository.class);
+        bind(RegRepository.class).annotatedWith(RegMeteringDeviceRecordsRepositoryAnnotation.class)
+            .to(RegMeteringDeviceRecordsRepository.class);
     }   
     
     public MainMenuManager getMainMenuManager(){
@@ -94,20 +107,6 @@ public class AppEnv extends AbstractModule {
     
     public void init() {
         initProperties(null);
-
-//        String db = "db";
-//        String dbUrl = "jdbc:h2:" + getRootPath() + File.separator + db + File.separator + "QUEB;AUTO_SERVER=TRUE"; //<property name=\"javax.persistence.jdbc.url\" value=\
-//        Map hm = new HashMap();
-//        hm.put("javax.persistence.jdbc.url", dbUrl);
-//
-//        QueriesEngine dao = QueriesEngine.instance("QUE", hm);
-//
-//        ((ClassifierRepositoryImpl) getClassifierRepository()).setDAO(dao);
-//
-//        stateHolder = new StateHolder();
-//
-//        initMarschaller();
-//        initManagers();
     }
     
     private Properties initProperties(String propFileName) {
