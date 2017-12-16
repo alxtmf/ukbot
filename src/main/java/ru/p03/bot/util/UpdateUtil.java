@@ -24,4 +24,9 @@ public class UpdateUtil {
         return update.getMessage() != null ? update.getMessage().getChat()
                 : update.getCallbackQuery().getMessage().getChat();
     }
+    
+    public static String getDataFromUpdate(Update update) {
+        return update.getCallbackQuery() == null ? null
+                : update.getCallbackQuery().getData();
+    }
 }

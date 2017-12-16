@@ -6,6 +6,7 @@
 package ru.p03.ukbot.main;
 
 import com.google.inject.Guice;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -30,12 +31,15 @@ public class Bot extends TelegramLongPollingBot implements IBot {
 
     private static final String TOKEN = "509858146:AAFvNkgB8RmN4mkpdtYrdAXh36tQplUQWqU";
     private static final String USERNAME = "sampleukbot";
+    private Injector injector;
+    
+    private MainMenuManager mainMenuManager;
 
     public Bot() {
     }
 
     public Bot(DefaultBotOptions options) {
-        super(options);
+        super(options);       
     }
 
     @Override
@@ -55,8 +59,8 @@ public class Bot extends TelegramLongPollingBot implements IBot {
             oe.onNext(update);
         });
         
-        Injector injector = Guice.createInjector(AppEnv.getContext());
-        MainMenuManager mainMenuManager = injector.getInstance(MainMenuManager.class);
+        //Injector injector = Guice.createInjector(AppEnv.getContext());
+        //MainMenuManager mainMenuManager = injector.getInstance(MainMenuManager.class);
         
         observableUpdate.subscribe(mainMenuManager);
 
@@ -134,5 +138,34 @@ public class Bot extends TelegramLongPollingBot implements IBot {
         } catch (TelegramApiException ex) {
             Logger.getLogger(Bot.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    /**
+     * @return the injector
+     */
+    public Injector getInjector() {
+        return injector;
+    }
+
+    /**
+     * @param injector the injector to set
+     */
+    public void setInjector(Injector injector) {
+        this.injector = injector;
+    }
+
+    /**
+     * @return the mainMenuManager
+     */
+    public MainMenuManager getMainMenuManager() {
+        return mainMenuManager;
+    }
+
+    /**
+     * @param mainMenuManager the mainMenuManager to set
+     */
+    @Inject
+    public void setMainMenuManager(MainMenuManager mainMenuManager) {
+        this.mainMenuManager = mainMenuManager;
     }
 }

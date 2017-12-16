@@ -42,7 +42,7 @@ public class ActionBuilder {
     }
 
     public Action buld(Update update) {
-        String data = update.getCallbackQuery().getData();
+        String data = UpdateUtil.getDataFromUpdate(update);
         if (data == null) {
             return null;
         }

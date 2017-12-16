@@ -70,18 +70,18 @@ public class RegMeteringDeviceRecordsRepository implements RegRepository<RegMete
                 regMeteringDeviceRecords.setIdApartmentMeteringDevice(idApartmentMeteringDevice);
             }
             em.persist(regMeteringDeviceRecords);
-            if (idCustomer != null) {
-                idCustomer.getRegMeteringDeviceRecordsCollection().add(regMeteringDeviceRecords);
-                idCustomer = em.merge(idCustomer);
-            }
-            if (idPeriod != null) {
-                idPeriod.getRegMeteringDeviceRecordsCollection().add(regMeteringDeviceRecords);
-                idPeriod = em.merge(idPeriod);
-            }
-            if (idApartmentMeteringDevice != null) {
-                idApartmentMeteringDevice.getRegMeteringDeviceRecordsCollection().add(regMeteringDeviceRecords);
-                idApartmentMeteringDevice = em.merge(idApartmentMeteringDevice);
-            }
+//            if (idCustomer != null) {
+//                idCustomer.getRegMeteringDeviceRecordsCollection().add(regMeteringDeviceRecords);
+//                idCustomer = em.merge(idCustomer);
+//            }
+//            if (idPeriod != null) {
+//                idPeriod.getRegMeteringDeviceRecordsCollection().add(regMeteringDeviceRecords);
+//                idPeriod = em.merge(idPeriod);
+//            }
+//            if (idApartmentMeteringDevice != null) {
+//                idApartmentMeteringDevice.getRegMeteringDeviceRecordsCollection().add(regMeteringDeviceRecords);
+//                idApartmentMeteringDevice = em.merge(idApartmentMeteringDevice);
+//            }
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -115,36 +115,36 @@ public class RegMeteringDeviceRecordsRepository implements RegRepository<RegMete
                 regMeteringDeviceRecords.setIdApartmentMeteringDevice(idApartmentMeteringDeviceNew);
             }
             regMeteringDeviceRecords = em.merge(regMeteringDeviceRecords);
-            if (idCustomerOld != null && !idCustomerOld.equals(idCustomerNew)) {
-                idCustomerOld.getRegMeteringDeviceRecordsCollection().remove(regMeteringDeviceRecords);
-                idCustomerOld = em.merge(idCustomerOld);
-            }
-            if (idCustomerNew != null && !idCustomerNew.equals(idCustomerOld)) {
-                idCustomerNew.getRegMeteringDeviceRecordsCollection().add(regMeteringDeviceRecords);
-                idCustomerNew = em.merge(idCustomerNew);
-            }
-            if (idPeriodOld != null && !idPeriodOld.equals(idPeriodNew)) {
-                idPeriodOld.getRegMeteringDeviceRecordsCollection().remove(regMeteringDeviceRecords);
-                idPeriodOld = em.merge(idPeriodOld);
-            }
-            if (idPeriodNew != null && !idPeriodNew.equals(idPeriodOld)) {
-                idPeriodNew.getRegMeteringDeviceRecordsCollection().add(regMeteringDeviceRecords);
-                idPeriodNew = em.merge(idPeriodNew);
-            }
-            if (idApartmentMeteringDeviceOld != null && !idApartmentMeteringDeviceOld.equals(idApartmentMeteringDeviceNew)) {
-                idApartmentMeteringDeviceOld.getRegMeteringDeviceRecordsCollection().remove(regMeteringDeviceRecords);
-                idApartmentMeteringDeviceOld = em.merge(idApartmentMeteringDeviceOld);
-            }
-            if (idApartmentMeteringDeviceNew != null && !idApartmentMeteringDeviceNew.equals(idApartmentMeteringDeviceOld)) {
-                idApartmentMeteringDeviceNew.getRegMeteringDeviceRecordsCollection().add(regMeteringDeviceRecords);
-                idApartmentMeteringDeviceNew = em.merge(idApartmentMeteringDeviceNew);
-            }
+//            if (idCustomerOld != null && !idCustomerOld.equals(idCustomerNew)) {
+//                idCustomerOld.getRegMeteringDeviceRecordsCollection().remove(regMeteringDeviceRecords);
+//                idCustomerOld = em.merge(idCustomerOld);
+//            }
+//            if (idCustomerNew != null && !idCustomerNew.equals(idCustomerOld)) {
+//                idCustomerNew.getRegMeteringDeviceRecordsCollection().add(regMeteringDeviceRecords);
+//                idCustomerNew = em.merge(idCustomerNew);
+//            }
+//            if (idPeriodOld != null && !idPeriodOld.equals(idPeriodNew)) {
+//                idPeriodOld.getRegMeteringDeviceRecordsCollection().remove(regMeteringDeviceRecords);
+//                idPeriodOld = em.merge(idPeriodOld);
+//            }
+//            if (idPeriodNew != null && !idPeriodNew.equals(idPeriodOld)) {
+//                idPeriodNew.getRegMeteringDeviceRecordsCollection().add(regMeteringDeviceRecords);
+//                idPeriodNew = em.merge(idPeriodNew);
+//            }
+//            if (idApartmentMeteringDeviceOld != null && !idApartmentMeteringDeviceOld.equals(idApartmentMeteringDeviceNew)) {
+//                idApartmentMeteringDeviceOld.getRegMeteringDeviceRecordsCollection().remove(regMeteringDeviceRecords);
+//                idApartmentMeteringDeviceOld = em.merge(idApartmentMeteringDeviceOld);
+//            }
+//            if (idApartmentMeteringDeviceNew != null && !idApartmentMeteringDeviceNew.equals(idApartmentMeteringDeviceOld)) {
+//                idApartmentMeteringDeviceNew.getRegMeteringDeviceRecordsCollection().add(regMeteringDeviceRecords);
+//                idApartmentMeteringDeviceNew = em.merge(idApartmentMeteringDeviceNew);
+//            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
                 Long id = regMeteringDeviceRecords.getId();
-                if (findRegMeteringDeviceRecords(id) == null) {
+                if (find(id) == null) {
                     throw new NonexistentEntityException("The regMeteringDeviceRecords with id " + id + " no longer exists.");
                 }
             }

@@ -64,14 +64,14 @@ public class RegApartmentMeteringSenderRepository implements RegRepository<RegAp
                 regApartmentMeteringSender.setIdCustomer(idCustomer);
             }
             em.persist(regApartmentMeteringSender);
-            if (idApartment != null) {
-                idApartment.getRegApartmentMeteringSenderCollection().add(regApartmentMeteringSender);
-                idApartment = em.merge(idApartment);
-            }
-            if (idCustomer != null) {
-                idCustomer.getRegApartmentMeteringSenderCollection().add(regApartmentMeteringSender);
-                idCustomer = em.merge(idCustomer);
-            }
+//            if (idApartment != null) {
+//                idApartment.getRegApartmentMeteringSenderCollection().add(regApartmentMeteringSender);
+//                idApartment = em.merge(idApartment);
+//            }
+//            if (idCustomer != null) {
+//                idCustomer.getRegApartmentMeteringSenderCollection().add(regApartmentMeteringSender);
+//                idCustomer = em.merge(idCustomer);
+//            }
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -99,28 +99,28 @@ public class RegApartmentMeteringSenderRepository implements RegRepository<RegAp
                 regApartmentMeteringSender.setIdCustomer(idCustomerNew);
             }
             regApartmentMeteringSender = em.merge(regApartmentMeteringSender);
-            if (idApartmentOld != null && !idApartmentOld.equals(idApartmentNew)) {
-                idApartmentOld.getRegApartmentMeteringSenderCollection().remove(regApartmentMeteringSender);
-                idApartmentOld = em.merge(idApartmentOld);
-            }
-            if (idApartmentNew != null && !idApartmentNew.equals(idApartmentOld)) {
-                idApartmentNew.getRegApartmentMeteringSenderCollection().add(regApartmentMeteringSender);
-                idApartmentNew = em.merge(idApartmentNew);
-            }
-            if (idCustomerOld != null && !idCustomerOld.equals(idCustomerNew)) {
-                idCustomerOld.getRegApartmentMeteringSenderCollection().remove(regApartmentMeteringSender);
-                idCustomerOld = em.merge(idCustomerOld);
-            }
-            if (idCustomerNew != null && !idCustomerNew.equals(idCustomerOld)) {
-                idCustomerNew.getRegApartmentMeteringSenderCollection().add(regApartmentMeteringSender);
-                idCustomerNew = em.merge(idCustomerNew);
-            }
+//            if (idApartmentOld != null && !idApartmentOld.equals(idApartmentNew)) {
+//                idApartmentOld.getRegApartmentMeteringSenderCollection().remove(regApartmentMeteringSender);
+//                idApartmentOld = em.merge(idApartmentOld);
+//            }
+//            if (idApartmentNew != null && !idApartmentNew.equals(idApartmentOld)) {
+//                idApartmentNew.getRegApartmentMeteringSenderCollection().add(regApartmentMeteringSender);
+//                idApartmentNew = em.merge(idApartmentNew);
+//            }
+//            if (idCustomerOld != null && !idCustomerOld.equals(idCustomerNew)) {
+//                idCustomerOld.getRegApartmentMeteringSenderCollection().remove(regApartmentMeteringSender);
+//                idCustomerOld = em.merge(idCustomerOld);
+//            }
+//            if (idCustomerNew != null && !idCustomerNew.equals(idCustomerOld)) {
+//                idCustomerNew.getRegApartmentMeteringSenderCollection().add(regApartmentMeteringSender);
+//                idCustomerNew = em.merge(idCustomerNew);
+//            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
                 Long id = regApartmentMeteringSender.getId();
-                if (findRegApartmentMeteringSender(id) == null) {
+                if (find(id) == null) {
                     throw new NonexistentEntityException("The regApartmentMeteringSender with id " + id + " no longer exists.");
                 }
             }

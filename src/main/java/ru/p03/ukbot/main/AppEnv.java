@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -23,6 +24,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.p03.common.util.QueriesEngine;
 import org.apache.http.HttpHost;
+import ru.p03.bot.document.spi.DocumentMarshalFactory;
+import ru.p03.bot.document.spi.DocumentMarshalerAggregator;
 import ru.p03.bot.infrastructure.IBot;
 import ru.p03.classifier.model.ClassifierRepository;
 import ru.p03.ukbot.manager.MainMenuManager;
@@ -30,6 +33,12 @@ import ru.p03.ukbot.model.repository.ClassifierRepositoryImpl;
 import ru.p03.ukbot.inject.annotation.*;
 import ru.p03.ukbot.model.repository.*;
 import ru.p03.classifier.model.RegRepository;
+import ru.p03.ukbot.inject.provider.DocumentMarshalerAggregatorProvider;
+import ru.p03.bot.document.spi.DocumentMarshalerAggregatorConfig;
+import ru.p03.bot.document.spi.DocumentMarshaller;
+import ru.p03.bot.document.spi.JsonDocumentMarshallerImpl;
+import ru.p03.bot.schema.Action;
+import ru.p03.ukbot.model.ClsDocType;
 
 /**
  *
@@ -65,6 +74,13 @@ public class AppEnv extends AbstractModule {
         QueriesEngineConfig conf = new QueriesEngineConfig(unitName, dbUrl, hm);
         return conf;
     }
+    
+    private DocumentMarshalerAggregatorConfig getDocumentMarshalerAggregatorConfig(){
+        DocumentMarshaller mrsh = new JsonDocumentMarshallerImpl(Action.class, ClsDocType.ACTION);
+        DocumentMarshalerAggregatorConfig config = new DocumentMarshalerAggregatorConfig(ClsDocType.types(),
+                Arrays.asList(mrsh));
+        return config;
+    }
 
     @Override
     protected void configure() {
@@ -82,6 +98,9 @@ public class AppEnv extends AbstractModule {
             .to(RegApartmentMeteringSenderRepository.class);
         bind(RegRepository.class).annotatedWith(RegMeteringDeviceRecordsRepositoryAnnotation.class)
             .to(RegMeteringDeviceRecordsRepository.class);
+        
+        bind(DocumentMarshalerAggregator.class).toProvider(DocumentMarshalerAggregatorProvider.class);
+        bind(DocumentMarshalerAggregatorConfig.class).toInstance(getDocumentMarshalerAggregatorConfig());
     }   
     
     public MainMenuManager getMainMenuManager(){

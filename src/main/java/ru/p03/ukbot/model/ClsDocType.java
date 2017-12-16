@@ -6,6 +6,7 @@
 
 package ru.p03.ukbot.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import ru.p03.classifier.model.Classifier;

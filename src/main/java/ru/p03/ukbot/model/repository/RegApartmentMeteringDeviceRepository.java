@@ -72,23 +72,23 @@ public class RegApartmentMeteringDeviceRepository implements RegRepository<RegAp
             }
             regApartmentMeteringDevice.setRegMeteringDeviceRecordsCollection(attachedRegMeteringDeviceRecordsCollection);
             em.persist(regApartmentMeteringDevice);
-            if (idApartment != null) {
-                idApartment.getRegApartmentMeteringDeviceCollection().add(regApartmentMeteringDevice);
-                idApartment = em.merge(idApartment);
-            }
-            if (idMeteringDeviceType != null) {
-                idMeteringDeviceType.getRegApartmentMeteringDeviceCollection().add(regApartmentMeteringDevice);
-                idMeteringDeviceType = em.merge(idMeteringDeviceType);
-            }
-            for (RegMeteringDeviceRecords regMeteringDeviceRecordsCollectionRegMeteringDeviceRecords : regApartmentMeteringDevice.getRegMeteringDeviceRecordsCollection()) {
-                RegApartmentMeteringDevice oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionRegMeteringDeviceRecords = regMeteringDeviceRecordsCollectionRegMeteringDeviceRecords.getIdApartmentMeteringDevice();
-                regMeteringDeviceRecordsCollectionRegMeteringDeviceRecords.setIdApartmentMeteringDevice(regApartmentMeteringDevice);
-                regMeteringDeviceRecordsCollectionRegMeteringDeviceRecords = em.merge(regMeteringDeviceRecordsCollectionRegMeteringDeviceRecords);
-                if (oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionRegMeteringDeviceRecords != null) {
-                    oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionRegMeteringDeviceRecords.getRegMeteringDeviceRecordsCollection().remove(regMeteringDeviceRecordsCollectionRegMeteringDeviceRecords);
-                    oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionRegMeteringDeviceRecords = em.merge(oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionRegMeteringDeviceRecords);
-                }
-            }
+//            if (idApartment != null) {
+//                idApartment.getRegApartmentMeteringDeviceCollection().add(regApartmentMeteringDevice);
+//                idApartment = em.merge(idApartment);
+//            }
+//            if (idMeteringDeviceType != null) {
+//                idMeteringDeviceType.getRegApartmentMeteringDeviceCollection().add(regApartmentMeteringDevice);
+//                idMeteringDeviceType = em.merge(idMeteringDeviceType);
+//            }
+//            for (RegMeteringDeviceRecords regMeteringDeviceRecordsCollectionRegMeteringDeviceRecords : regApartmentMeteringDevice.getRegMeteringDeviceRecordsCollection()) {
+//                RegApartmentMeteringDevice oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionRegMeteringDeviceRecords = regMeteringDeviceRecordsCollectionRegMeteringDeviceRecords.getIdApartmentMeteringDevice();
+//                regMeteringDeviceRecordsCollectionRegMeteringDeviceRecords.setIdApartmentMeteringDevice(regApartmentMeteringDevice);
+//                regMeteringDeviceRecordsCollectionRegMeteringDeviceRecords = em.merge(regMeteringDeviceRecordsCollectionRegMeteringDeviceRecords);
+//                if (oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionRegMeteringDeviceRecords != null) {
+//                    oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionRegMeteringDeviceRecords.getRegMeteringDeviceRecordsCollection().remove(regMeteringDeviceRecordsCollectionRegMeteringDeviceRecords);
+//                    oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionRegMeteringDeviceRecords = em.merge(oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionRegMeteringDeviceRecords);
+//                }
+//            }
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -126,39 +126,39 @@ public class RegApartmentMeteringDeviceRepository implements RegRepository<RegAp
             regMeteringDeviceRecordsCollectionNew = attachedRegMeteringDeviceRecordsCollectionNew;
             regApartmentMeteringDevice.setRegMeteringDeviceRecordsCollection(regMeteringDeviceRecordsCollectionNew);
             regApartmentMeteringDevice = em.merge(regApartmentMeteringDevice);
-            if (idApartmentOld != null && !idApartmentOld.equals(idApartmentNew)) {
-                idApartmentOld.getRegApartmentMeteringDeviceCollection().remove(regApartmentMeteringDevice);
-                idApartmentOld = em.merge(idApartmentOld);
-            }
-            if (idApartmentNew != null && !idApartmentNew.equals(idApartmentOld)) {
-                idApartmentNew.getRegApartmentMeteringDeviceCollection().add(regApartmentMeteringDevice);
-                idApartmentNew = em.merge(idApartmentNew);
-            }
-            if (idMeteringDeviceTypeOld != null && !idMeteringDeviceTypeOld.equals(idMeteringDeviceTypeNew)) {
-                idMeteringDeviceTypeOld.getRegApartmentMeteringDeviceCollection().remove(regApartmentMeteringDevice);
-                idMeteringDeviceTypeOld = em.merge(idMeteringDeviceTypeOld);
-            }
-            if (idMeteringDeviceTypeNew != null && !idMeteringDeviceTypeNew.equals(idMeteringDeviceTypeOld)) {
-                idMeteringDeviceTypeNew.getRegApartmentMeteringDeviceCollection().add(regApartmentMeteringDevice);
-                idMeteringDeviceTypeNew = em.merge(idMeteringDeviceTypeNew);
-            }
-            for (RegMeteringDeviceRecords regMeteringDeviceRecordsCollectionOldRegMeteringDeviceRecords : regMeteringDeviceRecordsCollectionOld) {
-                if (!regMeteringDeviceRecordsCollectionNew.contains(regMeteringDeviceRecordsCollectionOldRegMeteringDeviceRecords)) {
-                    regMeteringDeviceRecordsCollectionOldRegMeteringDeviceRecords.setIdApartmentMeteringDevice(null);
-                    regMeteringDeviceRecordsCollectionOldRegMeteringDeviceRecords = em.merge(regMeteringDeviceRecordsCollectionOldRegMeteringDeviceRecords);
-                }
-            }
-            for (RegMeteringDeviceRecords regMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords : regMeteringDeviceRecordsCollectionNew) {
-                if (!regMeteringDeviceRecordsCollectionOld.contains(regMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords)) {
-                    RegApartmentMeteringDevice oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords = regMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords.getIdApartmentMeteringDevice();
-                    regMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords.setIdApartmentMeteringDevice(regApartmentMeteringDevice);
-                    regMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords = em.merge(regMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords);
-                    if (oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords != null && !oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords.equals(regApartmentMeteringDevice)) {
-                        oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords.getRegMeteringDeviceRecordsCollection().remove(regMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords);
-                        oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords = em.merge(oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords);
-                    }
-                }
-            }
+//            if (idApartmentOld != null && !idApartmentOld.equals(idApartmentNew)) {
+//                idApartmentOld.getRegApartmentMeteringDeviceCollection().remove(regApartmentMeteringDevice);
+//                idApartmentOld = em.merge(idApartmentOld);
+//            }
+//            if (idApartmentNew != null && !idApartmentNew.equals(idApartmentOld)) {
+//                idApartmentNew.getRegApartmentMeteringDeviceCollection().add(regApartmentMeteringDevice);
+//                idApartmentNew = em.merge(idApartmentNew);
+//            }
+//            if (idMeteringDeviceTypeOld != null && !idMeteringDeviceTypeOld.equals(idMeteringDeviceTypeNew)) {
+//                idMeteringDeviceTypeOld.getRegApartmentMeteringDeviceCollection().remove(regApartmentMeteringDevice);
+//                idMeteringDeviceTypeOld = em.merge(idMeteringDeviceTypeOld);
+//            }
+//            if (idMeteringDeviceTypeNew != null && !idMeteringDeviceTypeNew.equals(idMeteringDeviceTypeOld)) {
+//                idMeteringDeviceTypeNew.getRegApartmentMeteringDeviceCollection().add(regApartmentMeteringDevice);
+//                idMeteringDeviceTypeNew = em.merge(idMeteringDeviceTypeNew);
+//            }
+//            for (RegMeteringDeviceRecords regMeteringDeviceRecordsCollectionOldRegMeteringDeviceRecords : regMeteringDeviceRecordsCollectionOld) {
+//                if (!regMeteringDeviceRecordsCollectionNew.contains(regMeteringDeviceRecordsCollectionOldRegMeteringDeviceRecords)) {
+//                    regMeteringDeviceRecordsCollectionOldRegMeteringDeviceRecords.setIdApartmentMeteringDevice(null);
+//                    regMeteringDeviceRecordsCollectionOldRegMeteringDeviceRecords = em.merge(regMeteringDeviceRecordsCollectionOldRegMeteringDeviceRecords);
+//                }
+//            }
+//            for (RegMeteringDeviceRecords regMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords : regMeteringDeviceRecordsCollectionNew) {
+//                if (!regMeteringDeviceRecordsCollectionOld.contains(regMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords)) {
+//                    RegApartmentMeteringDevice oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords = regMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords.getIdApartmentMeteringDevice();
+//                    regMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords.setIdApartmentMeteringDevice(regApartmentMeteringDevice);
+//                    regMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords = em.merge(regMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords);
+//                    if (oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords != null && !oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords.equals(regApartmentMeteringDevice)) {
+//                        oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords.getRegMeteringDeviceRecordsCollection().remove(regMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords);
+//                        oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords = em.merge(oldIdApartmentMeteringDeviceOfRegMeteringDeviceRecordsCollectionNewRegMeteringDeviceRecords);
+//                    }
+//                }
+//            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();

@@ -44,8 +44,9 @@ public class Main {
 //        TelegramBotsApi botsApi = new TelegramBotsApi();
 
         Runnable r = () -> {
-            Injector injector = Guice.createInjector(AppEnv.getContext());
+            Injector injector = Guice.createInjector(AppEnv.getContext());          
             Bot bot = injector.getInstance(Bot.class);
+            bot.setInjector(injector);
 //            Bot bot = null;
 //            HttpHost proxy = null;
 //            //HttpHost proxy = AppEnv.getContext().getProxyIfAbsetnt();
