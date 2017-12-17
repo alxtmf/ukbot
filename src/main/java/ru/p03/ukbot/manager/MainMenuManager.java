@@ -21,8 +21,10 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 import ru.p03.bot.document.spi.DocumentMarshalerAggregator;
 import ru.p03.bot.infrastructure.IBot;
 import ru.p03.bot.infrastructure.IManager;
+import ru.p03.bot.schema.Action;
 import ru.p03.bot.util.ActionBuilder;
 import ru.p03.bot.util.InlineKeyboardButtonBuilder;
+import ru.p03.bot.util.InlineKeyboardMarkupBuilder;
 import ru.p03.bot.util.UpdateUtil;
 import ru.p03.classifier.model.ClassifierRepository;
 import ru.p03.ukbot.main.Bot;
@@ -43,8 +45,7 @@ public class MainMenuManager implements IManager, Observer<Update> {
         return (Bot) bot;
     }
 
-    @Override
-    public void processCommand(Update update) {
+    private void mainMenu(Update update) {
         SendMessage answerMessage = new SendMessageBuilder().html()
                 .setReplyMarkup(keyboard(update))
                 .setChatId(update)
@@ -59,7 +60,16 @@ public class MainMenuManager implements IManager, Observer<Update> {
     }
 
     @Override
+    public void processCommand(Update update) {
+        mainMenu(update);
+    }
+
+    @Override
     public void processCallbackQuery(Update update) {
+        Action action = new ActionBuilder(marshalFactory).buld(update);
+        if (action != null && Actions.OPEN_MAIN.equals(action.getName())) {
+            mainMenu(update);
+        }
     }
 
     @Override
@@ -89,30 +99,26 @@ public class MainMenuManager implements IManager, Observer<Update> {
     }
 
     private InlineKeyboardMarkup keyboard(Update update) {
-        final InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-        keyboard.add(Arrays.asList(new InlineKeyboardButtonBuilder()
-                .setText("Подать показания")
-                .setCallbackData(new ActionBuilder(getMarshalFactory())
-                        .setName(Actions.SET_METERING_DEVICES_RECIRD)
-                        .asString())
-                .build()));
-        keyboard.add(Arrays.asList(new InlineKeyboardButtonBuilder()
-                .setText("Мои приборы учета")
-                .setCallbackData(new ActionBuilder(getMarshalFactory())
-                        .setName(Actions.MY_METERING_DEVICES)
-                        .asString())
-                .build()));
-        keyboard.add(Arrays.asList(new InlineKeyboardButtonBuilder()
-                .setText("История")
-                .setCallbackData(new ActionBuilder(getMarshalFactory())
-                        .setName(Actions.HISTORY)
-                        .asString())
-                .build()//,
-        //Actions.mainMenuButton(getMarshalFactory())
-        ));
-        markup.setKeyboard(keyboard);
-        return markup;
+        return new InlineKeyboardMarkupBuilder()
+                .add(new InlineKeyboardButtonBuilder()
+                        .setText("Подать показания")
+                        .setCallbackData(new ActionBuilder(getMarshalFactory())
+                                .setName(Actions.SET_METERING_DEVICES_RECIRD)
+                                .asString())
+                        .build())
+                .add(new InlineKeyboardButtonBuilder()
+                        .setText("Мои приборы учета")
+                        .setCallbackData(new ActionBuilder(getMarshalFactory())
+                                .setName(Actions.MY_METERING_DEVICES)
+                                .asString())
+                        .build())
+                .add(new InlineKeyboardButtonBuilder()
+                        .setText("История")
+                        .setCallbackData(new ActionBuilder(getMarshalFactory())
+                                .setName(Actions.HISTORY)
+                                .asString())
+                        .build())
+                .build();
     }
 
     @Override

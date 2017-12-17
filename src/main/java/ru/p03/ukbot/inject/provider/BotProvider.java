@@ -25,26 +25,28 @@ import ru.p03.ukbot.main.Bot;
  */
 public class BotProvider implements Provider<Bot> {
 
-    private final Bot bot;
+    private static Bot bot;
 
     @Inject
     public BotProvider(HttpHost proxy) {
-        ApiContextInitializer.init();
-        TelegramBotsApi botsApi = new TelegramBotsApi();
-        if (proxy.getHostName().equals( "0.0.0.0")) {
-            bot = new Bot();
-        } else {
-            DefaultBotOptions instance = ApiContext.getInstance(DefaultBotOptions.class);
-            RequestConfig rc = RequestConfig.custom().setProxy(proxy).build();
-            instance.setRequestConfig(rc);
-            bot = new Bot(instance);
-        }
+        if (bot == null) {
+            ApiContextInitializer.init();
+            TelegramBotsApi botsApi = new TelegramBotsApi();
+            if (proxy.getHostName().equals("0.0.0.0")) {
+                bot = new Bot();
+            } else {
+                DefaultBotOptions instance = ApiContext.getInstance(DefaultBotOptions.class);
+                RequestConfig rc = RequestConfig.custom().setProxy(proxy).build();
+                instance.setRequestConfig(rc);
+                bot = new Bot(instance);
+            }
 
-        try {
-            botsApi.registerBot(bot);
-            //AppEnv.getContext().getMenuManager().setBot(bot);
-        } catch (TelegramApiRequestException ex) {
-            Logger.getLogger(BotProvider.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                botsApi.registerBot(bot);
+                //AppEnv.getContext().getMenuManager().setBot(bot);
+            } catch (TelegramApiRequestException ex) {
+                Logger.getLogger(BotProvider.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

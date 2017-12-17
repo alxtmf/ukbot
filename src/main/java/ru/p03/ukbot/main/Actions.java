@@ -5,10 +5,14 @@
  */
 package ru.p03.ukbot.main;
 
+import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import ru.p03.bot.document.spi.DocumentMarshalerAggregator;
 import ru.p03.bot.util.ActionBuilder;
 import ru.p03.bot.util.InlineKeyboardButtonBuilder;
+import ru.p03.bot.util.SendMessageBuilder;
 
 /**
  *
@@ -27,6 +31,13 @@ public class Actions {
                 .setCallbackData(new ActionBuilder(marshalFactory)
                         .setName(Actions.OPEN_MAIN)
                         .asString())
+                .build();
+    }
+
+    public static SendMessage errorMessage(Update update) {
+        return new SendMessageBuilder().html()
+                .setChatId(update)
+                .setText("Ой, что-то пошло не так, попробуйте еще раз или перейдите в главное меню")
                 .build();
     }
 }

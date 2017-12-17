@@ -89,6 +89,7 @@ public class AppEnv extends AbstractModule {
         bind(ClassifierRepository.class).to(ClassifierRepositoryImpl.class);
         
         bind(IBot.class).toProvider(BotProvider.class);
+        //bind(IBot.class).to(Bot.class);
         bind(HttpHost.class).toInstance(getProxyIfAbsetnt());
         bind(MainMenuManager.class).toInstance(getMainMenuManager());
         

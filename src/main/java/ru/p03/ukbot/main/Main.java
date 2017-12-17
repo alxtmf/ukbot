@@ -27,6 +27,8 @@ public class Main {
     static {
         System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
     }
+    
+    private static Injector injector;
 
     public static void main(String[] args) {
 
@@ -38,15 +40,16 @@ public class Main {
             //AppEnv.getContext();//.init();
         }
         
+        injector = Guice.createInjector(AppEnv.getContext()); 
         
 
 //        ApiContextInitializer.init();
 //        TelegramBotsApi botsApi = new TelegramBotsApi();
 
-        Runnable r = () -> {
-            Injector injector = Guice.createInjector(AppEnv.getContext());          
-            Bot bot = injector.getInstance(Bot.class);
-            bot.setInjector(injector);
+        Runnable r = () -> {       
+            Bot bot = getInjector().getInstance(Bot.class);
+            
+            //bot.setInjector(getInjector());
 //            Bot bot = null;
 //            HttpHost proxy = null;
 //            //HttpHost proxy = AppEnv.getContext().getProxyIfAbsetnt();
@@ -78,5 +81,12 @@ public class Main {
             }
         }
 
+    }
+
+    /**
+     * @return the injector
+     */
+    public static Injector getInjector() {
+        return injector;
     }
 }
