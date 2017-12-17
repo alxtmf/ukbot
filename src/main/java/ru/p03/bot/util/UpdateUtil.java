@@ -6,6 +6,7 @@
 package ru.p03.bot.util;
 
 import org.telegram.telegrambots.api.objects.Chat;
+import org.telegram.telegrambots.api.objects.Contact;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.User;
 
@@ -26,7 +27,12 @@ public class UpdateUtil {
     }
     
     public static String getDataFromUpdate(Update update) {
-        return update.getCallbackQuery() == null ? null
-                : update.getCallbackQuery().getData();
+        return update.getCallbackQuery() != null ? update.getCallbackQuery().getData()
+                : null;
+    }
+    
+    public static Contact getContactFromUpdate(Update update) {
+        return update.getMessage() != null ? update.getMessage().getContact()
+                : null;
     }
 }

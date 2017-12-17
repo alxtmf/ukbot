@@ -97,6 +97,14 @@ CREATE TABLE UK.CLS_APARTMENT(
     NUMBER          VARCHAR(255),
     FOREIGN KEY(ID_HOUSE) REFERENCES UK.CLS_HOUSE(ID)
 );
+
+CREATE TABLE UK.CLS_CUSTOMER_PHONE(
+    ID              BIGINT IDENTITY,
+    ID_CUSTOMER     BIGINT,
+    IS_DELETED      INT DEFAULT 0,
+    PHONE           VARCHAR(11),
+    FOREIGN KEY(ID_CUSTOMER) REFERENCES UK.CLS_CUSTOMER(ID)
+);
 --------------------------------------------------------------------------------
 -- приборы учета по квартирам
 CREATE TABLE UK.REG_APARTMENT_METERING_DEVICE(

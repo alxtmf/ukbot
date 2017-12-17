@@ -38,6 +38,7 @@ import ru.p03.bot.document.spi.DocumentMarshalerAggregatorConfig;
 import ru.p03.bot.document.spi.DocumentMarshaller;
 import ru.p03.bot.document.spi.JsonDocumentMarshallerImpl;
 import ru.p03.bot.schema.Action;
+import ru.p03.ukbot.manager.RegisterPhoneManager;
 import ru.p03.ukbot.model.ClsDocType;
 
 /**
@@ -107,7 +108,7 @@ public class AppEnv extends AbstractModule {
     public MainMenuManager getMainMenuManager(){
         return new MainMenuManager();
     }
-    
+        
     public String getRootPath() {
         return (String) environments.get(ROOT_PATH);
     }

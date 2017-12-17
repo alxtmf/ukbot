@@ -7,7 +7,6 @@
 package ru.p03.bot.util;
 
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import ru.p03.bot.schema.Action;
 
 /**
  *
@@ -23,7 +22,7 @@ public class InlineKeyboardButtonBuilder {
 
     
     public InlineKeyboardButtonBuilder setText(String text){
-        button.setText(text);
+        button.setText(text); 
         return this;
     }
     

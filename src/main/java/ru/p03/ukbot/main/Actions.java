@@ -7,7 +7,6 @@ package ru.p03.ukbot.main;
 
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import ru.p03.bot.document.spi.DocumentMarshalerAggregator;
 import ru.p03.bot.util.ActionBuilder;
@@ -24,6 +23,7 @@ public class Actions {
     public static final String MY_METERING_DEVICES = "MMD";
     public static final String SET_METERING_DEVICES_RECIRD = "MDR";
     public static final String OPEN_MAIN = "OM";
+    public static final String REGISTER_PHONE = "RP";
 
     public static InlineKeyboardButton mainMenuButton(DocumentMarshalerAggregator marshalFactory) {
         return new InlineKeyboardButtonBuilder()

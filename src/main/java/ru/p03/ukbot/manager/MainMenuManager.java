@@ -8,15 +8,11 @@ package ru.p03.ukbot.manager;
 import com.google.inject.Inject;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 import ru.p03.bot.document.spi.DocumentMarshalerAggregator;
 import ru.p03.bot.infrastructure.IBot;
@@ -25,7 +21,6 @@ import ru.p03.bot.schema.Action;
 import ru.p03.bot.util.ActionBuilder;
 import ru.p03.bot.util.InlineKeyboardButtonBuilder;
 import ru.p03.bot.util.InlineKeyboardMarkupBuilder;
-import ru.p03.bot.util.UpdateUtil;
 import ru.p03.classifier.model.ClassifierRepository;
 import ru.p03.ukbot.main.Bot;
 import ru.p03.ukbot.main.Actions;
@@ -116,6 +111,12 @@ public class MainMenuManager implements IManager, Observer<Update> {
                         .setText("История")
                         .setCallbackData(new ActionBuilder(getMarshalFactory())
                                 .setName(Actions.HISTORY)
+                                .asString())
+                        .build())
+                .add(new InlineKeyboardButtonBuilder()
+                        .setText("Зарегистрироваться")
+                        .setCallbackData(new ActionBuilder(getMarshalFactory())
+                                .setName(Actions.REGISTER_PHONE)
                                 .asString())
                         .build())
                 .build();

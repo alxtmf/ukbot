@@ -29,9 +29,10 @@ import ru.p03.classifier.model.Classifier;
 @Entity
 @Table(name = "CLS_CUSTOMER", catalog = "UK", schema = "UK")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "ClsCustomer.findAll", query = "SELECT c FROM ClsCustomer c")})
 public class ClsCustomer extends Classifier implements Serializable {
+
+    @OneToMany(mappedBy = "idCustomer")
+    private Collection<ClsCustomerPhone> clsCustomerPhoneCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -160,6 +161,15 @@ public class ClsCustomer extends Classifier implements Serializable {
     @Override
     public String toString() {
         return "ru.p03.ukbot.model.ClsCustomer[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<ClsCustomerPhone> getClsCustomerPhoneCollection() {
+        return clsCustomerPhoneCollection;
+    }
+
+    public void setClsCustomerPhoneCollection(Collection<ClsCustomerPhone> clsCustomerPhoneCollection) {
+        this.clsCustomerPhoneCollection = clsCustomerPhoneCollection;
     }
     
 }

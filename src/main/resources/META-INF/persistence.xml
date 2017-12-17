@@ -15,11 +15,12 @@
     <class>ru.p03.ukbot.model.ClsUser</class>
     <class>ru.p03.ukbot.model.RegMeteringDeviceRecords</class>
     <class>ru.p03.ukbot.model.RegUseRole</class>
+    <class>ru.p03.ukbot.model.ClsCustomerPhone</class>
     <properties>
-      <!--<property name="javax.persistence.jdbc.url" value="jdbc:h2:E:\test\bea\bea"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:h2:E:\test\bea\bea"/>
       <property name="javax.persistence.jdbc.user" value="LOCAL_ADMIN"/>
       <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="123"/>-->
+      <property name="javax.persistence.jdbc.password" value="123"/>
     </properties>
   </persistence-unit>
 </persistence>
