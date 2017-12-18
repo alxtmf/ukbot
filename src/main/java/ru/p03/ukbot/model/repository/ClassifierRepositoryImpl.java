@@ -10,10 +10,14 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import ru.p03.classifier.model.ClassifierRepository;
 import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import ru.p03.classifier.model.Classifier;
 import ru.p03.common.util.QueriesEngine;
+import ru.p03.ukbot.model.ClsCustomer;
+import ru.p03.ukbot.model.ClsCustomerPhone;
 import ru.p03.ukbot.model.repository.exceptions.NonexistentEntityException;
 
 /**
@@ -81,6 +85,29 @@ public class ClassifierRepositoryImpl implements ClassifierRepository{
                 + " c  WHERE c.isDeleted = 0 AND c.code = :code";
         T obj = DAO.<T>single(DAO.<T>getListTextQuery(clazz, text, DAO.pair("code", code)));
         return (Classifier)obj;
+    }
+    
+    @Nullable
+    public ClsCustomer findTelegramId(Integer telegramId) {
+        String text = " SELECT c FROM ClsCustomer c " 
+                + " WHERE c.isDeleted = 0 AND c.idTelegram = :idTelegram";
+        ClsCustomer obj = DAO.<ClsCustomer>single(DAO.<ClsCustomer>getListTextQuery(
+                ClsCustomer.class, text, DAO.pair("idTelegram", telegramId)));
+        return obj;
+    }
+    
+    @Nullable
+    public ClsCustomer findPhone(String phone) {
+        ClsCustomer customer = null;
+        String clearPhone = phone.replaceAll("[^\\d.]", "");
+        String text = "SELECT c FROM ClsCustomerPhone c " 
+                + " WHERE c.isDeleted = 0 AND c.phone = :phone";
+        ClsCustomerPhone cphone = DAO.<ClsCustomerPhone>single(DAO.<ClsCustomerPhone>getListTextQuery(
+                ClsCustomerPhone.class, text, DAO.pair("phone", clearPhone)));
+        if (cphone != null){
+            customer = cphone.getIdCustomer();
+        }
+        return customer;
     }
     
     @Override

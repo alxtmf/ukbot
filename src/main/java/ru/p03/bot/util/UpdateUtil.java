@@ -5,6 +5,8 @@
  */
 package ru.p03.bot.util;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.api.objects.Contact;
 import org.telegram.telegrambots.api.objects.Update;
@@ -16,22 +18,26 @@ import org.telegram.telegrambots.api.objects.User;
  */
 public class UpdateUtil {
 
-    public static User getUserFromUpdate(Update update) {
+    @Nonnull
+    public static User getUserFromUpdate(@Nonnull Update update) {
         return update.getMessage() != null ? update.getMessage().getFrom()
                 : update.getCallbackQuery().getFrom();
     }
 
-    public static Chat getChatFromUpdate(Update update) {
+    @Nonnull
+    public static Chat getChatFromUpdate(@Nonnull Update update) {
         return update.getMessage() != null ? update.getMessage().getChat()
                 : update.getCallbackQuery().getMessage().getChat();
     }
     
-    public static String getDataFromUpdate(Update update) {
+    @Nullable
+    public static String getDataFromUpdate(@Nonnull Update update) {
         return update.getCallbackQuery() != null ? update.getCallbackQuery().getData()
                 : null;
     }
     
-    public static Contact getContactFromUpdate(Update update) {
+    @Nullable
+    public static Contact getContactFromUpdate(@Nonnull Update update) {
         return update.getMessage() != null ? update.getMessage().getContact()
                 : null;
     }

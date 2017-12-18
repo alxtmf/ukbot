@@ -40,4 +40,13 @@ public class Actions {
                 .setText("Ой, что-то пошло не так, попробуйте еще раз или перейдите в главное меню")
                 .build();
     }
+    
+    public static InlineKeyboardButton feedbackMenuButton(DocumentMarshalerAggregator marshalFactory) {
+        return new InlineKeyboardButtonBuilder()
+                .setText("Написать администратору")
+                .setCallbackData(new ActionBuilder(marshalFactory)
+                        .setName(Actions.OPEN_MAIN)
+                        .asString())
+                .build();
+    }
 }

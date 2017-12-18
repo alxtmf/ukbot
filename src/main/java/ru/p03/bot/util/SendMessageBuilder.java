@@ -22,6 +22,10 @@ public class SendMessageBuilder {
         
     }
     
+    public SendMessageBuilder(Update update){
+        setChatId(update);
+    }
+    
     public SendMessageBuilder html(){
         sendMessage.setParseMode(PARSE_MODE_HTML);
         return this;

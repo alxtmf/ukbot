@@ -6,7 +6,6 @@
 package ru.p03.ukbot.model;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -14,8 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -41,9 +38,9 @@ public class ClsCustomer extends Classifier implements Serializable {
     @Column(name = "ID")
     private Long id;
     @Column(name = "ID_TELEGRAM")
-    private BigInteger idTelegram;
+    private Integer idTelegram;
     @Column(name = "ID_CHAT")
-    private BigInteger idChat;
+    private Integer idChat;
     @Column(name = "IS_DELETED")
     private Integer isDeleted;
     @Column(name = "FAM")
@@ -72,19 +69,19 @@ public class ClsCustomer extends Classifier implements Serializable {
         this.id = id;
     }
 
-    public BigInteger getIdTelegram() {
+    public Integer getIdTelegram() {
         return idTelegram;
     }
 
-    public void setIdTelegram(BigInteger idTelegram) {
+    public void setIdTelegram(Integer idTelegram) {
         this.idTelegram = idTelegram;
     }
 
-    public BigInteger getIdChat() {
+    public Integer getIdChat() {
         return idChat;
     }
 
-    public void setIdChat(BigInteger idChat) {
+    public void setIdChat(Integer idChat) {
         this.idChat = idChat;
     }
 
