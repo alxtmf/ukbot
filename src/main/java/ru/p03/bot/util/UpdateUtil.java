@@ -7,8 +7,10 @@ package ru.p03.bot.util;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import org.telegram.telegrambots.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.api.objects.Contact;
+import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.User;
 
@@ -36,9 +38,27 @@ public class UpdateUtil {
                 : null;
     }
     
+   
     @Nullable
     public static Contact getContactFromUpdate(@Nonnull Update update) {
         return update.getMessage() != null ? update.getMessage().getContact()
                 : null;
+    }
+    
+    @Nonnull
+    public static DeleteMessage deleteMessage(@Nonnull Update update) throws Exception{
+        Message message = update.getMessage();
+        if (message == null){
+            throw new Exception("No delete null message!");
+        }
+        DeleteMessage deleteMessage = new DeleteMessage(getChatFromUpdate(update).getId(),
+                message.getMessageId());
+        return deleteMessage;
+    }
+    
+    @Nonnull
+    public static DeleteMessage deleteMessage(@Nonnull Message message){
+        DeleteMessage deleteMessage = new DeleteMessage(message.getChatId(), message.getMessageId());
+        return deleteMessage;
     }
 }

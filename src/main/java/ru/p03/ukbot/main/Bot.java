@@ -7,6 +7,7 @@ package ru.p03.ukbot.main;
 
 import com.google.inject.Singleton;
 import io.reactivex.Observable;
+import org.telegram.telegrambots.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;

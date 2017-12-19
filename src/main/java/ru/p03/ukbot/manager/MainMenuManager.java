@@ -8,23 +8,31 @@ package ru.p03.ukbot.manager;
 import com.google.inject.Inject;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import java.io.Serializable;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.telegram.telegrambots.api.methods.BotApiMethod;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
+import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
+import org.telegram.telegrambots.updateshandlers.SentCallback;
 import ru.p03.bot.document.spi.DocumentMarshalerAggregator;
 import ru.p03.bot.infrastructure.IBot;
 import ru.p03.bot.infrastructure.IManager;
 import ru.p03.bot.schema.Action;
 import ru.p03.bot.util.ActionBuilder;
+import ru.p03.bot.util.ChatInfoHolder;
 import ru.p03.bot.util.InlineKeyboardButtonBuilder;
 import ru.p03.bot.util.InlineKeyboardMarkupBuilder;
 import ru.p03.classifier.model.ClassifierRepository;
 import ru.p03.ukbot.main.Bot;
 import ru.p03.ukbot.main.Actions;
 import ru.p03.bot.util.SendMessageBuilder;
+import ru.p03.bot.util.UpdateUtil;
 
 /**
  *
@@ -35,6 +43,7 @@ public class MainMenuManager implements IManager, Observer<Update> {
     private IBot bot;
     private DocumentMarshalerAggregator marshalFactory;
     private ClassifierRepository classifierRepository;
+    private ChatInfoHolder chatInfoHolder;
 
     private Bot getBot() {
         return (Bot) bot;
@@ -48,7 +57,34 @@ public class MainMenuManager implements IManager, Observer<Update> {
                 .build();
 
         try {
-            getBot().execute(answerMessage);
+            getBot().executeAsync(answerMessage, new SentCallback() {
+                @Override
+                public void onResult(BotApiMethod method, Serializable response) {
+                    Message answerMessage = (Message) response;
+                    List<Message> trimMessages = getChatInfoHolder().trimMessages(answerMessage.getChat());
+                    getChatInfoHolder().pushMessage(answerMessage);
+                    trimMessages.stream().map(UpdateUtil::deleteMessage).forEach((dm) -> {
+                        try {
+                            getBot().execute(dm);
+                        } catch (TelegramApiException ex) {
+                            Logger.getLogger(MainMenuManager.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    );
+                    //System.out.print("1");
+                }
+
+                @Override
+                public void onError(BotApiMethod method, TelegramApiRequestException apiException) {
+                    ///System.out.print("1");
+                }
+
+                @Override
+                public void onException(BotApiMethod method, Exception exception) {
+                    //System.out.print("1");
+                }
+
+            });
         } catch (TelegramApiException ex) {
             Logger.getLogger(MainMenuManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -132,34 +168,31 @@ public class MainMenuManager implements IManager, Observer<Update> {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     * @return the marshalFactory
-     */
     public DocumentMarshalerAggregator getMarshalFactory() {
         return marshalFactory;
     }
 
-    /**
-     * @param marshalFactory the marshalFactory to set
-     */
     @Inject
     public void setMarshalFactory(DocumentMarshalerAggregator marshalFactory) {
         this.marshalFactory = marshalFactory;
     }
 
-    /**
-     * @return the classifierRepository
-     */
     public ClassifierRepository getClassifierRepository() {
         return classifierRepository;
     }
 
-    /**
-     * @param classifierRepository the classifierRepository to set
-     */
     @Inject
     public void setClassifierRepository(ClassifierRepository classifierRepository) {
         this.classifierRepository = classifierRepository;
+    }
+
+    public ChatInfoHolder getChatInfoHolder() {
+        return chatInfoHolder;
+    }
+
+    @Inject
+    public void setChatInfoHolder(ChatInfoHolder chatInfoHolder) {
+        this.chatInfoHolder = chatInfoHolder;
     }
 
 }

@@ -38,6 +38,7 @@ import ru.p03.bot.document.spi.DocumentMarshalerAggregatorConfig;
 import ru.p03.bot.document.spi.DocumentMarshaller;
 import ru.p03.bot.document.spi.JsonDocumentMarshallerImpl;
 import ru.p03.bot.schema.Action;
+import ru.p03.bot.util.ChatInfoHolder;
 import ru.p03.ukbot.manager.RegisterPhoneManager;
 import ru.p03.ukbot.model.ClsDocType;
 
@@ -54,6 +55,8 @@ public class AppEnv extends AbstractModule {
     
     private Map environments = new HashMap();
     
+    private ChatInfoHolder chatInfoHolder = new ChatInfoHolder();
+    
     private static AppEnv appEnv = null;
     
     public static AppEnv getContext(){
@@ -62,6 +65,10 @@ public class AppEnv extends AbstractModule {
             appEnv.init();
         }
         return appEnv;
+    }
+    
+    private ChatInfoHolder getChatInfoHolder(){
+        return chatInfoHolder;
     }
         
 
@@ -103,6 +110,8 @@ public class AppEnv extends AbstractModule {
         
         bind(DocumentMarshalerAggregator.class).toProvider(DocumentMarshalerAggregatorProvider.class);
         bind(DocumentMarshalerAggregatorConfig.class).toInstance(getDocumentMarshalerAggregatorConfig());
+        
+        bind(ChatInfoHolder.class).toInstance(getChatInfoHolder());
     }   
     
     public MainMenuManager getMainMenuManager(){
