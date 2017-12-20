@@ -22,37 +22,48 @@ import org.telegram.telegrambots.api.objects.Update;
  */
 public class ChatInfoHolder {
 
-    private Map<Chat, List<Message>> userMessages = new HashMap<>();
+    private Map<Long, List<Message>> userMessages = new HashMap<>();
 
-    public void pushMessage(Update update) {
+    public void pushMessage(@Nonnull Update update) {
         Message message = update.getMessage();
         if (message != null) {
             Chat chat = UpdateUtil.getChatFromUpdate(update);
-            if (userMessages.containsKey(chat)) {
-                userMessages.get(chat).add(message);
-            } else {
-                userMessages.put(chat, new ArrayList<>(Arrays.asList(message)));
-            }
+            push(chat, message);
+//            if (userMessages.containsKey(chat.getId())) {
+//                userMessages.get(chat).add(message);
+//            } else {
+//                userMessages.put(chat.getId(), new ArrayList<>(Arrays.asList(message)));
+//            }
         }
     }
 
     public void pushMessage(@Nonnull Message message) {
         Chat chat = message.getChat();
-        if (userMessages.containsKey(chat)) {
-            userMessages.get(chat).add(message);
+        push(chat, message);
+//        if (userMessages.containsKey(chat.getId())) {
+//            userMessages.get(chat.getId()).add(message);
+//        } else {
+//            userMessages.put(chat.getId(), new ArrayList<>(Arrays.asList(message)));
+//        }
+    }
+    
+    private void push(Chat chat, Message message){
+        if (userMessages.containsKey(chat.getId())) {
+            userMessages.get(chat.getId()).add(message);
         } else {
-            userMessages.put(chat, new ArrayList<>(Arrays.asList(message)));
+            userMessages.put(chat.getId(), new ArrayList<>(Arrays.asList(message)));
         }
     }
 
     public List<Message> trimMessages(@Nonnull Chat chat) {
-        List<Message> trimed = new ArrayList<>();
-        Collections.copy(trimed, get(chat));
-        get(chat).clear();
+        List<Message> get = get(chat);
+        List<Message> trimed = new ArrayList<>(get.size());
+        trimed.addAll(get);
+        get.clear();
         return trimed;
     }
 
     private List<Message> get(Chat chat) {
-        return userMessages.get(chat) == null ? new ArrayList<>() : userMessages.get(chat);
+        return userMessages.get(chat.getId()) == null ? new ArrayList<>() : userMessages.get(chat.getId());
     }
 }
