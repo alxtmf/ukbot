@@ -59,8 +59,15 @@ public class MainMenuManager implements IManager, Observer<Update> {
 
     @Override
     public void processCommand(Update update) {
-        getChatInfoHolder().pushMessage(update);
-        mainMenu(update);
+        try {
+            if (!getChatInfoHolder().containsCustomer(update)) {
+                getChatInfoHolder().pushCustomer(update);
+            }
+            getChatInfoHolder().pushMessage(update);
+            mainMenu(update);
+        } catch (Exception ex) {
+            Logger.getLogger(MainMenuManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override

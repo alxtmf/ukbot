@@ -117,7 +117,7 @@ public class ClsHouse extends Classifier implements Serializable {
 
     @Override
     public String toString() {
-        return "ru.p03.ukbot.model.ClsHouse[ id=" + id + " ]";
+        return "ул." + getStreet() + " " + getNumber();
     }
     
 }

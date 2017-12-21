@@ -16,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import ru.p03.classifier.model.Classifier;
 import ru.p03.common.util.QueriesEngine;
+import ru.p03.ukbot.model.ClsApartment;
 import ru.p03.ukbot.model.ClsCustomer;
 import ru.p03.ukbot.model.ClsCustomerPhone;
 import ru.p03.ukbot.model.repository.exceptions.NonexistentEntityException;
@@ -109,7 +110,7 @@ public class ClassifierRepositoryImpl implements ClassifierRepository{
         }
         return customer;
     }
-    
+       
     @Override
     public<T extends Classifier> void delete(Class<T> clazz, Long id) throws NonexistentEntityException {
         EntityManager em = null;

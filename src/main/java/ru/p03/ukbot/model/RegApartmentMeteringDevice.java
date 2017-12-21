@@ -129,7 +129,11 @@ public class RegApartmentMeteringDevice implements Serializable, IBean {
 
     @Override
     public String toString() {
-        return "ru.p03.ukbot.model.RegApartmentMeteringDevice[ id=" + id + " ]";
+        return getIdApartment() + " - " + toShortString();
+    }
+    
+    public String toShortString() {
+        return getIdMeteringDeviceType().getName() + " N " + getSerial();
     }
     
 }
