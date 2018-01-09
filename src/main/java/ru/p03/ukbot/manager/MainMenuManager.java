@@ -119,7 +119,7 @@ public class MainMenuManager implements IManager, Observer<Update> {
                                 .asString())
                         .build())
                 .add(new InlineKeyboardButtonBuilder()
-                        .setText("История")
+                        .setText("История показаний")
                         .setCallbackData(new ActionBuilder(getMarshalFactory())
                                 .setName(Actions.HISTORY)
                                 .asString())

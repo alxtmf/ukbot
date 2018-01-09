@@ -84,7 +84,7 @@ public class MyMeteringDeviceManager implements IManager, Observer<Update> {
             }
 
         } catch (TelegramApiException ex) {
-            Logger.getLogger(MainMenuManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MyMeteringDeviceManager.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(MyMeteringDeviceManager.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -8,6 +8,7 @@ package ru.p03.ukbot.manager;
 import com.google.inject.Inject;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -18,20 +19,25 @@ import ru.p03.bot.infrastructure.IBot;
 import ru.p03.bot.infrastructure.IManager;
 import ru.p03.bot.schema.Action;
 import ru.p03.bot.util.ActionBuilder;
+import ru.p03.bot.util.ChatInfoHolder;
 import ru.p03.bot.util.SendMessageBuilder;
 import ru.p03.classifier.model.ClassifierRepository;
 import ru.p03.ukbot.main.Actions;
 import ru.p03.ukbot.main.Bot;
+import ru.p03.ukbot.model.ClsCustomer;
+import ru.p03.ukbot.model.RegMeteringDeviceRecords;
 
 /**
  *
  * @author altmf
  */
 public class RecordsHistoryManager implements IManager, Observer<Update> {
+
     private IBot bot;
     private DocumentMarshalerAggregator marshalFactory;
     private ClassifierRepository classifierRepository;
-    
+    private ChatInfoHolder chatInfoHolder;
+
     private Bot getBot() {
         return (Bot) bot;
     }
@@ -42,16 +48,26 @@ public class RecordsHistoryManager implements IManager, Observer<Update> {
 
     @Override
     public void processCallbackQuery(Update update) {
-        SendMessage answerMessage = new SendMessageBuilder().html()
-                .setChatId(update)
-                .setText("История показаний")
-                .build();
-
         try {
-            getBot().execute(answerMessage);
+            
+            Action action = new ActionBuilder(marshalFactory).buld(update);
+            if (action != null && Actions.HISTORY.equals(action.getName())) {
+
+                ClsCustomer customer = getChatInfoHolder().getCustomer(update);
+                Collection<RegMeteringDeviceRecords> records = customer.getRegMeteringDeviceRecordsCollection();
+                SendMessage answerMessage = new SendMessageBuilder().html()
+                    .setChatId(update)
+                    .setText(!records.isEmpty() ? "<b>История показаний:</b>"
+                            : "Отсуствует история показаний")
+                    .build();
+                getBot().execute(answerMessage);
+            }
+         
         } catch (TelegramApiException ex) {
             Logger.getLogger(MainMenuManager.class.getName()).log(Level.SEVERE, null, ex);
-        }   
+        } catch (Exception ex) {
+            Logger.getLogger(RecordsHistoryManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -70,9 +86,9 @@ public class RecordsHistoryManager implements IManager, Observer<Update> {
 
     @Override
     public void onNext(Update update) {
-        
+
         Action action = new ActionBuilder(marshalFactory).buld(update);
-        if (action == null || !Actions.HISTORY.equals(action.getName())){
+        if (action == null || !Actions.HISTORY.equals(action.getName())) {
             return;
         }
 
@@ -109,5 +125,14 @@ public class RecordsHistoryManager implements IManager, Observer<Update> {
     @Inject
     public void setClassifierRepository(ClassifierRepository classifierRepository) {
         this.classifierRepository = classifierRepository;
+    }
+
+    public ChatInfoHolder getChatInfoHolder() {
+        return chatInfoHolder;
+    }
+
+    @Inject
+    public void setChatInfoHolder(ChatInfoHolder chatInfoHolder) {
+        this.chatInfoHolder = chatInfoHolder;
     }
 }
