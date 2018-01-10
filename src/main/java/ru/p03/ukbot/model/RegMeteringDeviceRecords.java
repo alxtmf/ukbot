@@ -162,7 +162,7 @@ public class RegMeteringDeviceRecords implements Serializable, IBean {
 
     @Override
     public String toString() {
-        return "ru.p03.ukbot.model.RegMeteringDeviceRecords[ id=" + id + " ]";
+        return getIdPeriod().toString() + ": " + getIdApartmentMeteringDevice().toShortString();
     }
     
 }

@@ -24,7 +24,9 @@ import ru.p03.bot.util.SendMessageBuilder;
 import ru.p03.classifier.model.ClassifierRepository;
 import ru.p03.ukbot.main.Actions;
 import ru.p03.ukbot.main.Bot;
+import ru.p03.ukbot.model.ClsApartment;
 import ru.p03.ukbot.model.ClsCustomer;
+import ru.p03.ukbot.model.RegApartmentMeteringSender;
 import ru.p03.ukbot.model.RegMeteringDeviceRecords;
 
 /**
@@ -49,20 +51,49 @@ public class RecordsHistoryManager implements IManager, Observer<Update> {
     @Override
     public void processCallbackQuery(Update update) {
         try {
-            
+            SendMessage answerMessage = null;
             Action action = new ActionBuilder(marshalFactory).buld(update);
             if (action != null && Actions.HISTORY.equals(action.getName())) {
 
                 ClsCustomer customer = getChatInfoHolder().getCustomer(update);
+
+                Collection<RegApartmentMeteringSender> senders = customer.getRegApartmentMeteringSenderCollection();
+
+                if (senders.isEmpty()) {
+                    answerMessage = new SendMessageBuilder(update).html("Отсустсвуют данные о ваших квартирах")
+                            .build();
+                    getBot().execute(answerMessage);
+                    return;
+                }
+
                 Collection<RegMeteringDeviceRecords> records = customer.getRegMeteringDeviceRecordsCollection();
-                SendMessage answerMessage = new SendMessageBuilder().html()
-                    .setChatId(update)
-                    .setText(!records.isEmpty() ? "<b>История показаний:</b>"
-                            : "Отсуствует история показаний")
-                    .build();
+                answerMessage = new SendMessageBuilder(update).html(!records.isEmpty()
+                        ? "<b>История показаний:</b>" : "Отсуствует история показаний")
+                        .build();
                 getBot().execute(answerMessage);
+
+                if (!records.isEmpty()) {
+                    for (RegApartmentMeteringSender sender : senders) {
+                        ClsApartment apartment = sender.getIdApartment();
+                        String text = apartment.toString() + ": \n";
+
+                        int count = 1;
+                        for (RegMeteringDeviceRecords record : records) {
+                            if (apartment.equals(record.getIdApartmentMeteringDevice().getIdApartment())) {
+                                text += (count + ". " + record.toString() + "\n");
+                                ++count;
+                            }
+                        }
+                        if (count > 1) {
+                            answerMessage = new SendMessageBuilder(update).html()
+                                    .setText(text)
+                                    .build();
+                            getBot().execute(answerMessage);
+                        }
+                    }
+                }
             }
-         
+
         } catch (TelegramApiException ex) {
             Logger.getLogger(MainMenuManager.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {

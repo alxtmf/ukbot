@@ -22,7 +22,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.apache.http.client.utils.DateUtils;
 import ru.p03.classifier.model.Classifier;
+import ru.p03.common.util.DateUtil;
 
 /**
  *
@@ -122,7 +124,7 @@ public class ClsPeriod extends Classifier implements Serializable {
 
     @Override
     public String toString() {
-        return "ru.p03.ukbot.model.ClsPeriod[ id=" + id + " ]";
+        return DateUtil.transformDate(dateBegin) + " - " + DateUtil.transformDate(dateEnd);
     }
     
 }

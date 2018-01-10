@@ -14,39 +14,43 @@ import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboard;
  * @author altmf
  */
 public class SendMessageBuilder {
-    
+
     private static final String PARSE_MODE_HTML = "HTML";
     private final SendMessage sendMessage = new SendMessage();
-    
-    public SendMessageBuilder(){
-        
+
+    public SendMessageBuilder() {
+
     }
-    
-    public SendMessageBuilder(Update update){
+
+    public SendMessageBuilder(Update update) {
         setChatId(update);
     }
-    
-    public SendMessageBuilder html(){
+
+    public SendMessageBuilder html() {
         sendMessage.setParseMode(PARSE_MODE_HTML);
         return this;
     }
-    
-    public SendMessageBuilder setChatId(Update update){
+
+    public SendMessageBuilder html(String text) {
+        return html().setText(text);
+    }
+
+    public SendMessageBuilder setChatId(Update update) {
         sendMessage.setChatId(UpdateUtil.getChatFromUpdate(update).getId());
         return this;
     }
-    
-    public SendMessageBuilder setReplyMarkup(ReplyKeyboard replyKeyboard){
+
+    public SendMessageBuilder setReplyMarkup(ReplyKeyboard replyKeyboard) {
         sendMessage.setReplyMarkup(replyKeyboard);
         return this;
     }
-    
-    public SendMessageBuilder setText(String text){
+
+    public SendMessageBuilder setText(String text) {
         sendMessage.setText(text);
         return this;
     }
-    
-    public SendMessage build(){
+
+    public SendMessage build() {
         return sendMessage;
     }
 }
