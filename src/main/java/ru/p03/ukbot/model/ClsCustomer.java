@@ -7,6 +7,8 @@ package ru.p03.ukbot.model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -168,5 +170,14 @@ public class ClsCustomer extends Classifier implements Serializable {
     public void setClsCustomerPhoneCollection(Collection<ClsCustomerPhone> clsCustomerPhoneCollection) {
         this.clsCustomerPhoneCollection = clsCustomerPhoneCollection;
     }
-    
+
+//    @XmlTransient
+//    public List<ClsApartment> getApartments() {
+//        return getRegApartmentMeteringSenderCollection()
+//                .stream()
+//                .map(c -> c.getIdApartment())
+//                .distinct()
+//                .collect(Collectors.toList());
+//    }
+
 }

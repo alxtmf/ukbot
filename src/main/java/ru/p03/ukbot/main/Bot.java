@@ -12,11 +12,13 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import ru.p03.bot.infrastructure.IBot;
-import ru.p03.ukbot.manager.AddMeteringDeviceRecordManager;
+import ru.p03.ukbot.manager.SelectApartmentManager;
 import ru.p03.ukbot.manager.MainMenuManager;
 import ru.p03.ukbot.manager.MyMeteringDeviceManager;
 import ru.p03.ukbot.manager.RecordsHistoryManager;
 import ru.p03.ukbot.manager.RegisterPhoneManager;
+import ru.p03.ukbot.manager.AddMeteringDeviceRecordManager;
+import ru.p03.ukbot.manager.SelectMeteringDeviceRecordManager;
 
 /**
  *
@@ -54,20 +56,26 @@ public class Bot extends TelegramLongPollingBot implements IBot {
         });
 
         MainMenuManager mainMenuManager = Main.getInjector().getInstance(MainMenuManager.class);
-        AddMeteringDeviceRecordManager addMeteringDeviceRecordManager = Main.getInjector()
-                .getInstance(AddMeteringDeviceRecordManager.class);
+        SelectApartmentManager selectApartmentManager = Main.getInjector()
+                .getInstance(SelectApartmentManager.class);
         MyMeteringDeviceManager myMeteringDeviceManager = Main.getInjector()
                 .getInstance(MyMeteringDeviceManager.class);
         RecordsHistoryManager recordsHistoryManager = Main.getInjector()
                 .getInstance(RecordsHistoryManager.class);
         RegisterPhoneManager registerPhoneManager = Main.getInjector()
                 .getInstance(RegisterPhoneManager.class);
+        AddMeteringDeviceRecordManager addMeteringDeviceRecordManager = Main.getInjector()
+                .getInstance(AddMeteringDeviceRecordManager.class);
+        SelectMeteringDeviceRecordManager selectMeteringDeviceRecordManager = Main.getInjector()
+                .getInstance(SelectMeteringDeviceRecordManager.class);
         
         observableUpdate.subscribe(mainMenuManager);
         observableUpdate.subscribe(addMeteringDeviceRecordManager);
         observableUpdate.subscribe(myMeteringDeviceManager);
         observableUpdate.subscribe(recordsHistoryManager);
         observableUpdate.subscribe(registerPhoneManager);
+        observableUpdate.subscribe(selectApartmentManager);
+        observableUpdate.subscribe(selectMeteringDeviceRecordManager);
 
     }
 

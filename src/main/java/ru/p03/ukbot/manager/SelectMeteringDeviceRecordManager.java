@@ -8,6 +8,7 @@ package ru.p03.ukbot.manager;
 import com.google.inject.Inject;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,12 +32,15 @@ import ru.p03.ukbot.main.Actions;
 import ru.p03.ukbot.main.Bot;
 import ru.p03.ukbot.model.ClsApartment;
 import ru.p03.ukbot.model.ClsCustomer;
+import ru.p03.ukbot.model.RegApartmentMeteringDevice;
+import ru.p03.ukbot.model.RegApartmentMeteringSender;
+import ru.p03.ukbot.model.RegMeteringDeviceRecords;
 
 /**
  *
  * @author altmf
  */
-public class AddMeteringDeviceRecordManager implements IManager, Observer<Update> {
+public class SelectMeteringDeviceRecordManager implements IManager, Observer<Update> {
 
     private IBot bot;
     private DocumentMarshalerAggregator marshalFactory;
@@ -74,7 +78,7 @@ public class AddMeteringDeviceRecordManager implements IManager, Observer<Update
 //        } catch (TelegramApiException ex) {
 //            Logger.getLogger(MainMenuManager.class.getName()).log(Level.SEVERE, null, ex);
 //        } catch (Exception ex) {
-//            Logger.getLogger(AddMeteringDeviceRecordManager.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(SelectMeteringDeviceRecordManager.class.getName()).log(Level.SEVERE, null, ex);
 //        }
     }
 

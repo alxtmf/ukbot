@@ -5,6 +5,8 @@
  */
 package ru.p03.bot.util;
 
+import java.util.Objects;
+import javax.annotation.Nonnull;
 import org.telegram.telegrambots.api.objects.Update;
 import ru.p03.bot.schema.Action;
 import ru.p03.bot.document.spi.DocumentMarshalerAggregator;
@@ -30,6 +32,11 @@ public class ActionBuilder {
 
     public ActionBuilder setValue(String name) {
         action.setValue(name);
+        return this;
+    }
+    
+    public ActionBuilder setValue(@Nonnull Object name) {
+        action.setValue(Objects.toString(name));
         return this;
     }
 

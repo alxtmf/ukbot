@@ -8,10 +8,12 @@ package ru.p03.ukbot.manager;
 import com.google.inject.Inject;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -31,12 +33,15 @@ import ru.p03.ukbot.main.Actions;
 import ru.p03.ukbot.main.Bot;
 import ru.p03.ukbot.model.ClsApartment;
 import ru.p03.ukbot.model.ClsCustomer;
+import ru.p03.ukbot.model.RegApartmentMeteringDevice;
+import ru.p03.ukbot.model.RegApartmentMeteringSender;
+import ru.p03.ukbot.model.RegMeteringDeviceRecords;
 
 /**
  *
  * @author altmf
  */
-public class AddMeteringDeviceRecordManager implements IManager, Observer<Update> {
+public class SelectApartmentManager implements IManager, Observer<Update> {
 
     private IBot bot;
     private DocumentMarshalerAggregator marshalFactory;
@@ -53,29 +58,35 @@ public class AddMeteringDeviceRecordManager implements IManager, Observer<Update
 
     @Override
     public void processCallbackQuery(Update update) {
-//        SendMessage answerMessage = null;
-//        try {
-//            Action action = new ActionBuilder(marshalFactory).buld(update);
-//            if (action != null && Actions.SET_METERING_DEVICES_RECORD.equals(action.getName())) {
-//                ClsCustomer customer = getChatInfoHolder().getCustomer(update);
-//                List<ClsApartment> apartments = customer.getApartments();
-//
-//                if (apartments.isEmpty()) {
-//                    answerMessage = new SendMessageBuilder(update).html("Отсустсвуют данные о ваших квартирах")
-//                            .build();
-//                } else {
-//                    answerMessage = new SendMessageBuilder(update).b("Выберите квартиру")
-//                            .setReplyMarkup(keyboardApartmentButton(apartments))
-//                            .build();
-//                }
-//
-//                getBot().execute(answerMessage);
-//            }
-//        } catch (TelegramApiException ex) {
-//            Logger.getLogger(MainMenuManager.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (Exception ex) {
-//            Logger.getLogger(AddMeteringDeviceRecordManager.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        SendMessage answerMessage = null;
+        try {
+            Action action = new ActionBuilder(marshalFactory).buld(update);
+            if (action != null && Actions.SET_METERING_DEVICES_RECORD.equals(action.getName())) {
+                ClsCustomer customer = getChatInfoHolder().getCustomer(update);
+                List<ClsApartment> apartments = customer.getRegApartmentMeteringSenderCollection()
+                .stream()
+                .map(c -> c.getIdApartment())
+                .distinct()
+                .collect(Collectors.toList());
+                
+                //.getApartments();
+
+                if (apartments.isEmpty()) {
+                    answerMessage = new SendMessageBuilder(update).html("Отсустсвуют данные о ваших квартирах")
+                            .build();
+                } else {
+                    answerMessage = new SendMessageBuilder(update).b("Выберите квартиру")
+                            .setReplyMarkup(keyboardApartmentButton(apartments))
+                            .build();
+                }
+
+                getBot().execute(answerMessage);
+            }
+        } catch (TelegramApiException ex) {
+            Logger.getLogger(MainMenuManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(SelectApartmentManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override

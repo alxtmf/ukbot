@@ -34,6 +34,10 @@ public class SendMessageBuilder {
     public SendMessageBuilder html(String text) {
         return html().setText(text);
     }
+    
+    public SendMessageBuilder b(String text) {
+        return html().setText("<b>" + text + "</b>");
+    }
 
     public SendMessageBuilder setChatId(Update update) {
         sendMessage.setChatId(UpdateUtil.getChatFromUpdate(update).getId());

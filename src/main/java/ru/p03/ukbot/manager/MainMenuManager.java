@@ -109,7 +109,7 @@ public class MainMenuManager implements IManager, Observer<Update> {
                 .add(new InlineKeyboardButtonBuilder()
                         .setText("Подать показания")
                         .setCallbackData(new ActionBuilder(getMarshalFactory())
-                                .setName(Actions.SET_METERING_DEVICES_RECIRD)
+                                .setName(Actions.SET_METERING_DEVICES_RECORD)
                                 .asString())
                         .build())
                 .add(new InlineKeyboardButtonBuilder()

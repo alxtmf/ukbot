@@ -24,7 +24,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.p03.common.util.QueriesEngine;
 import org.apache.http.HttpHost;
-import ru.p03.bot.document.spi.DocumentMarshalFactory;
 import ru.p03.bot.document.spi.DocumentMarshalerAggregator;
 import ru.p03.bot.infrastructure.IBot;
 import ru.p03.classifier.model.ClassifierRepository;
@@ -39,7 +38,6 @@ import ru.p03.bot.document.spi.DocumentMarshaller;
 import ru.p03.bot.document.spi.JsonDocumentMarshallerImpl;
 import ru.p03.bot.schema.Action;
 import ru.p03.bot.util.ChatInfoHolder;
-import ru.p03.ukbot.manager.RegisterPhoneManager;
 import ru.p03.ukbot.model.ClsDocType;
 
 /**

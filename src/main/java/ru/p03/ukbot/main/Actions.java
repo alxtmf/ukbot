@@ -21,7 +21,10 @@ public class Actions {
 
     public static final String HISTORY = "HST";
     public static final String MY_METERING_DEVICES = "MMD";
-    public static final String SET_METERING_DEVICES_RECIRD = "MDR";
+    public static final String SET_METERING_DEVICES_RECORD = "MDR";
+    public static final String SELECT_APARTMENT_FOR_SET_METERING_DEVICES_RECORD = "SAR";
+    public static final String SELECT_METERING_DEVICE_FOR_SET_METERING_DEVICES_RECORD = "SMD";
+    public static final String ADD_METERING_DEVICES_RECORD = "ADR";
     public static final String OPEN_MAIN = "OM";
     public static final String REGISTER_PHONE = "RP";
 
